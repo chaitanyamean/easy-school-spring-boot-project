@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
 
+import java.util.List;
+
 @Controller
 public class ContactController {
 
@@ -52,5 +54,13 @@ public class ContactController {
            contactService.saveContact(contact);
           return "redirect:/contact";
       }
+
+    @RequestMapping("/displayMessages")
+    public ModelAndView displayMessages(Model model) {
+        List<Contact> contactMsgs = contactService.findMsgsWithOpenStatus();
+        ModelAndView modelAndView = new ModelAndView("messages.html");
+        modelAndView.addObject("contactMsgs",contactMsgs);
+        return modelAndView;
+    }
 
 }
