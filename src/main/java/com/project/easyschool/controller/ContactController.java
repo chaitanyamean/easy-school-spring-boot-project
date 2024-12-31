@@ -11,10 +11,13 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
+
 
 @Controller
 public class ContactController {
@@ -61,6 +64,12 @@ public class ContactController {
         ModelAndView modelAndView = new ModelAndView("messages.html");
         modelAndView.addObject("contactMsgs",contactMsgs);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/closeMsg",method = RequestMethod.GET)
+    public String closeMsg(@RequestParam int id, Authentication authentication) {
+        contactService.updateMsgStatus(id,authentication.getName());
+        return "redirect:/displayMessages";
     }
 
 }

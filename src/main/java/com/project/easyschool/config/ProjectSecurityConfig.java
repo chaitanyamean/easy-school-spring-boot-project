@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
         SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
             http.csrf((csrf) -> csrf.disable())
-                    .headers(headers -> headers.frameOptions(frameOptionsConfig -> frameOptionsConfig.disable()))
                     .authorizeHttpRequests((requests) -> requests.requestMatchers("/dashboard").authenticated()
                             .requestMatchers("/displayMessages").hasRole("ADMIN")
+                            .requestMatchers("/closeMsg/**").hasRole("ADMIN")
                             .requestMatchers("/", "/home").permitAll()
                             .requestMatchers("/holidays/**").permitAll()
                             .requestMatchers("/contact").permitAll()
@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
                             .requestMatchers("/courses").permitAll()
                             .requestMatchers("/about").permitAll()
                             .requestMatchers("/login").permitAll()
-                            .requestMatchers(PathRequest.toH2Console()).permitAll()
                             .requestMatchers("/assets/**").permitAll())
                     .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
                             .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll())
