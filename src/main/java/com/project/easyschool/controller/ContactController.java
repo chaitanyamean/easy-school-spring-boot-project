@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
-import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -67,8 +66,8 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/closeMsg",method = RequestMethod.GET)
-    public String closeMsg(@RequestParam int id, Authentication authentication) {
-        contactService.updateMsgStatus(id,authentication.getName());
+    public String closeMsg(@RequestParam int id) {
+        contactService.updateMsgStatus(id);
         return "redirect:/displayMessages";
     }
 

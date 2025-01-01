@@ -4,6 +4,7 @@ import com.project.easyschool.model.Contact;
 import com.project.easyschool.model.Holiday;
 import com.project.easyschool.rommappers.ContactRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -16,18 +17,25 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public class HolidaysRepository {
+public interface HolidaysRepository  extends CrudRepository<Holiday, String> {
 
-    private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    public HolidaysRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
-    public List<Holiday> findAllHolidays() {
-        String sql = "SELECT * FROM holidays";
-        var rowMapper = BeanPropertyRowMapper.newInstance(Holiday.class);
-        return jdbcTemplate.query(sql, rowMapper);
-    }
+
+//    private final JdbcTemplate jdbcTemplate;
+//
+//    @Autowired
+//    public HolidaysRepository(JdbcTemplate jdbcTemplate) {
+//        this.jdbcTemplate = jdbcTemplate;
+//    }
+//
+//    public List<Holiday> findAllHolidays() {
+//        String sql = "SELECT * FROM holidays";
+//        var rowMapper = BeanPropertyRowMapper.newInstance(Holiday.class);
+//        return jdbcTemplate.query(sql, rowMapper);
+//    }
+
+
+
+
 }

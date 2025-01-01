@@ -10,40 +10,40 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContactService {
-
 
     @Autowired
     private ContactRepository contactRepository;
 
     private static Logger log = LoggerFactory.getLogger(ContactService.class);
 
-
     public boolean saveContact(Contact contact) {
         // TODO: Implement this method with persistence logic
         boolean isSaved = false;
         contact.setStatus(EazySchoolContants.OPEN);
-        contact.setCreatedBy(EazySchoolContants.ANONYMOUS);
-        contact.setCreatedAt(LocalDateTime.now());
-        int result = contactRepository.saveContactMsg(contact);
-        if (result > 0) {
+        Contact result = contactRepository.save(contact);
+        if (null != result && result.getContactId() > 0) {
             isSaved = true;
         }
         return isSaved;
-
     }
 
     public List<Contact> findMsgsWithOpenStatus(){
-        List<Contact> contactMsgs = contactRepository.findMsgsWithStatus(EazySchoolContants.OPEN);
+        List<Contact> contactMsgs = contactRepository.findByStatus(EazySchoolContants.OPEN);
         return contactMsgs;
     }
 
-    public boolean updateMsgStatus(int contactId, String updatedBy){
+    public boolean updateMsgStatus(int contactId){
         boolean isUpdated = false;
-        int result = contactRepository.updateMsgStatus(contactId,EazySchoolContants.CLOSE, updatedBy);
-        if(result>0) {
+        Optional<Contact> contact = contactRepository.findById(contactId);
+        contact.ifPresent(contact1 -> {
+            contact1.setStatus(EazySchoolContants.CLOSE);
+        });
+        Contact updatedContact = contactRepository.save(contact.get());
+        if(null != updatedContact && updatedContact.getUpdatedBy()!=null) {
             isUpdated = true;
         }
         return isUpdated;
